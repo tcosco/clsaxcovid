@@ -11,7 +11,9 @@
 label define Sex 0 "Female" 1 "Male"
 label define Likert  5 "Much better" 4 "A little better" 3 "Same" 2 "A little worse" 1 "Much worse"
 label define urban_rural 0 "Rural Area" 1 "Urban core" 2 "Urban fringe" 4 "Urban Areas out CMA/CAs" 6 "Secondary urban core" 9 "DA only" 3 "Error"
-
+label define AGEGRP "<55" 0 "55-64" 1 "65-74" 2 ">75" 3
+label define Smoke 1 "Daily" 2 "Occasionally" 3 "Not at all"
+label define Alcohol  1 "Almost every day (incl. 6 times a week)" 2 "4-5 times a week" 3 "2-3 times a week" 4 "Once a week" 5 "2-3 times a month" 6 "About once a month" 7 "Less than once a month" 96 "Never"
 
 
 
@@ -75,6 +77,11 @@ recode ANX (0/9=0)(10/21=1)
 clonevar age = age_nmbr_covid
 replace age = . if age ==-99999
 
+clonevar ageGRP = age
+recode ageGRP (20/54=0)(55/64=1)(65/74=2)(75/1000=3)
+label define AGEGRP "<55" 0 "55-64" 1 "65-74" 2 ">75" 3
+label values ageGRP AGEGRP
+
 * Sex * 
 
 clonevar sex = sex_clsagrp 
@@ -96,18 +103,32 @@ clonevar urbanrural = urban_rural_covid
 replace urbanrural = . if urbanrural == -88888
 label values urbanrural urban_rural 
 
+* smoking 
+
+clonevar smoke = smk_currcg_covid
+replace smoke = . if smoke == -88888
+replace smoke = . if smoke == -88881
+replace smoke = . if smoke == 8
+replace smoke = . if smoke == 9
+label values smoke Smoke
+
+
+* alcohol
+
+clonevar alcohol = alc_freq_covx
+replace alcohol = . if alcohol == -99999
+replace alcohol = . if alcohol == -88888
+replace alcohol = . if alcohol == -88881
+replace alcohol = . if alcohol == 98
+replace alcohol = . if alcohol == 99
+label values alcohol Alcohol
 
 
 
-
-Age (less than 55, 55-64, 65-74, and 75 and over)
-Sex
 Ethnicity (European or non-European background
 Total annual household income (less than $20,000, $20,000-<$50,000, $50,000-<$100,000, $100,000-<$150,000, and $150,000 or more)
-Dwelling type (house including single detached, semi-detached, duplex or townhouse; apartment or condominium; and other types of dwelling including senior’s housing, mobile home, and hotel)
-Living area (urban, rural)
+
 Household composition (living alone, not living alone)
-Alcohol consumption (did not drink in past 12 months including participants who never drink, occasional drinker, binge drinker, regular drinker)
 Smoking status (never smoker, former smoker, current smoker)
  Number of chronic conditions.
 
