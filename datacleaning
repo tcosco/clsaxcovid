@@ -1,0 +1,115 @@
+
+
+* Recoding missing variables to . 
+
+
+* Assigning labels 
+
+* defining variable names 
+
+
+label define Sex 0 "Female" 1 "Male"
+label define Likert  5 "Much better" 4 "A little better" 3 "Same" 2 "A little worse" 1 "Much worse"
+label define urban_rural 0 "Rural Area" 1 "Urban core" 2 "Urban fringe" 4 "Urban Areas out CMA/CAs" 6 "Secondary urban core" 9 "DA only" 3 "Error"
+
+
+
+
+** EXPOSURE VARIABLES ** 
+
+* cleaning vars *
+
+ foreach var of varlist mob_phact_covx mob_touch_covx mob_social_covx{
+ replace `var' = . if `var'==-88888
+ replace `var' = . if `var'==-88881
+ replace `var' = . if `var'==8
+ replace `var' = . if `var'==9
+ label values `var' Likert
+ }
+
+* renaming * 
+
+clonevar PHYS = mob_phact_covx
+clonevar INTOUCH = mob_touch_covx
+clonevar SOCIAL = mob_social_covx
+
+* binary variables - "a little worse" or "much worse" = 1; "same" "a little better" "much better" = 0 
+
+clonevar SOCIALbin = SOCIAL
+recode SOCIALbin (1/2=1)(3/5=0)
+tab SOCIAL SOCIALbin
+clonevar PHYSbin = PHYS
+recode PHYSbin (1/2=1)(3/5=0)
+clonevar INTOUCHbin = INTOUCH
+recode INTOUCHbin (1/2=1)(3/5=0)
+
+*labelling 
+label define Binary_worse 1 "Worse" 0 "Same/better"
+label values SOCIALbin Binary_worse
+label values PHYSbin Binary_worse
+label values INTOUCHbin Binary_worse
+
+
+
+** OUTCOME VARIABLES * 
+
+* Depression present = 1 or absent = 0 
+
+clonevar DEP = dep_dpsfd_covx
+replace DEP = . if DEP <=-1
+
+
+* Anxiety present =1 or absent 0 "
+clonevar ANX = gad_dscore_covx
+replace ANX = . if ANX == -77771 
+replace ANX = . if ANX == -77772
+replace ANX = . if ANX == -88881
+recode ANX (0/9=0)(10/21=1)
+
+
+ *** COVARIATES ***
+ 
+ 
+ * Age *
+
+clonevar age = age_nmbr_covid
+replace age = . if age ==-99999
+
+* Sex * 
+
+clonevar sex = sex_clsagrp 
+label values sex Sex 
+ 
+ * Dwelling type 
+ 
+ clonevar dwell = own_dwlg_covid
+replace dwell = . if dwell == -88881 
+replace dwell = . if dwell == -88888
+
+* Income 
+
+**** In COMP/TRACK??
+
+* Living area - rural urban
+
+clonevar urbanrural = urban_rural_covid
+replace urbanrural = . if urbanrural == -88888
+label values urbanrural urban_rural 
+
+
+
+
+
+Age (less than 55, 55-64, 65-74, and 75 and over)
+Sex
+Ethnicity (European or non-European background
+Total annual household income (less than $20,000, $20,000-<$50,000, $50,000-<$100,000, $100,000-<$150,000, and $150,000 or more)
+Dwelling type (house including single detached, semi-detached, duplex or townhouse; apartment or condominium; and other types of dwelling including senior’s housing, mobile home, and hotel)
+Living area (urban, rural)
+Household composition (living alone, not living alone)
+Alcohol consumption (did not drink in past 12 months including participants who never drink, occasional drinker, binge drinker, regular drinker)
+Smoking status (never smoker, former smoker, current smoker)
+ Number of chronic conditions.
+
+ Depression at CLSA FU1
+ Anxiety at CLSA FU1
