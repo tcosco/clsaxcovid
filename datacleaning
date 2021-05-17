@@ -11,9 +11,10 @@
 label define Sex 0 "Female" 1 "Male"
 label define Likert  5 "Much better" 4 "A little better" 3 "Same" 2 "A little worse" 1 "Much worse"
 label define urban_rural 0 "Rural Area" 1 "Urban core" 2 "Urban fringe" 4 "Urban Areas out CMA/CAs" 6 "Secondary urban core" 9 "DA only" 3 "Error"
-label define AGEGRP "<55" 0 "55-64" 1 "65-74" 2 ">75" 3
+label define AGEGRP 0 "<55" 1 "55-64" 2 "65-74" 3 ">75" 
 label define Smoke 1 "Daily" 2 "Occasionally" 3 "Not at all"
 label define Alcohol  1 "Almost every day (incl. 6 times a week)" 2 "4-5 times a week" 3 "2-3 times a week" 4 "Once a week" 5 "2-3 times a month" 6 "About once a month" 7 "Less than once a month" 96 "Never"
+label define house 1 "Live alone" 0 "Do not live alone"
 
 
 
@@ -93,9 +94,6 @@ label values sex Sex
 replace dwell = . if dwell == -88881 
 replace dwell = . if dwell == -88888
 
-* Income 
-
-**** In COMP/TRACK??
 
 * Living area - rural urban
 
@@ -123,14 +121,26 @@ replace alcohol = . if alcohol == 98
 replace alcohol = . if alcohol == 99
 label values alcohol Alcohol
 
+* household composition
+
+clonevar household = own_livc_cat_covid
+replace household = "5" if household == "5+"
+destring household, gen(houseCAT)
+replace houseCAT = . if houseCAT == -77771
+replace houseCAT = . if houseCAT == -88881
+replace houseCAT = . if houseCAT == -99999
+* coding to 1 = live alone - 0 = not alone 
+recode houseCAT (0=1)(2/5=0)
+label values houseCAT house
+
+*** INCOME
+
+*** ETHNICITY 
+
+*** NUMBER OF CHRONIC CONDITIONS 
 
 
-Ethnicity (European or non-European background
-Total annual household income (less than $20,000, $20,000-<$50,000, $50,000-<$100,000, $100,000-<$150,000, and $150,000 or more)
 
-Household composition (living alone, not living alone)
-Smoking status (never smoker, former smoker, current smoker)
- Number of chronic conditions.
 
- Depression at CLSA FU1
- Anxiety at CLSA FU1
+* Depression at CLSA FU1
+* Anxiety at CLSA FU1
