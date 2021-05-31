@@ -388,6 +388,31 @@ gen socialSUMFU1 = (otactFU1 + volunFU1 + neibrFU1 + outsFU1 + clubFU1 + educFU1
 xtile socialQUINTFU1=socialSUMFU1, n(5)
 xtile socialDICHFU1=socialSUMFU1, n(2)
 
+* age adjusted quintiles of social activity 
+
+gen agesocQ = .
+xtile agesoc45=socialSUMFU1, n(5), if ageGRP==0
+xtile agesoc55=socialSUMFU1, n(5), if ageGRP==1
+xtile agesoc65=socialSUMFU1, n(5), if ageGRP==2
+xtile agesoc75=socialSUMFU1, n(5), if ageGRP==3
+replace agesocQ = 1 if agesoc45==1 | agesoc55==1| agesoc65==1 | agesoc75==1
+replace agesocQ = 2 if agesoc45==2 | agesoc55==2| agesoc65==2 | agesoc75==2
+replace agesocQ = 3 if agesoc45==3 | agesoc55==3| agesoc65==3 | agesoc75==3
+replace agesocQ = 4 if agesoc45==4 | agesoc55==4| agesoc65==4 | agesoc75==4
+replace agesocQ = 5 if agesoc45==5 | agesoc55==5| agesoc65==5 | agesoc75==5
+
+* age adjusted dichotmous social activity
+gen agesocBIN = .
+xtile agesoc45B=socialSUMFU1, n(2), if ageGRP==0
+xtile agesoc55B=socialSUMFU1, n(2), if ageGRP==1
+xtile agesoc65B=socialSUMFU1, n(2), if ageGRP==2
+xtile agesoc75B=socialSUMFU1, n(2), if ageGRP==3
+replace agesocBIN = 1 if agesoc45B==1 | agesoc55B==1| agesoc65B==1 | agesoc75B==1
+replace agesocBIN = 2 if agesoc45B==2 | agesoc55B==2| agesoc65B==2 | agesoc75B==2
+
+
+
+
 
 
 *************************************************************************************************************
@@ -399,71 +424,38 @@ xtile socialDICHFU1=socialSUMFU1, n(2)
 * primary hypotheses - higher risk of depression/anixety if lower ability for social activity 
 
 logistic DEP SOCIALbin
-logistic DEP ageGRP sex dwell urbanrural smoke alcohol houseCAT income multimorb depFU1 moodFU1 anxFU1 SOCIALbin
+logistic DEP ageGRP i.sex i.dwell i.urbanruralBIN i.smoke i.alcohol i.houseCAT i.income i.multimorb i.depFU1 i.moodFU1 i.anxFU1 SOCIALbin
 
 logistic ANX SOCIALbin
-logistic ANX ageGRP sex dwell urbanrural smoke alcohol houseCAT income multimorb depFU1 moodFU1 anxFU1 SOCIALbin
+logistic ANX ageGRP i.sex i.dwell i.urbanruralBIN i.smoke i.alcohol i.houseCAT i.income i.multimorb i.depFU1 i.moodFU1 i.anxFU1 SOCIALbin
 
 logistic DEP INTOUCHbin
-logistic DEP ageGRP sex dwell urbanrural smoke alcohol houseCAT income multimorb depFU1 moodFU1 anxFU1 INTOUCHbin
+logistic DEP ageGRP i.sex i.dwell i.urbanruralBIN i.smoke i.alcohol i.houseCAT i.income i.multimorb i.depFU1 i.moodFU1 i.anxFU1 INTOUCHbin
 
 logistic ANX INTOUCHbin
-logistic ANX ageGRP sex dwell urbanrural smoke alcohol houseCAT income multimorb depFU1 moodFU1 anxFU1 INTOUCHbin
+logistic ANX ageGRP i.sex i.dwell i.urbanruralBIN i.smoke i.alcohol i.houseCAT i.income i.multimorb i.depFU1 i.moodFU1 i.anxFU1 INTOUCHbin
 
 * primary hypotheses - higher risk of depression/anixety if lower ability for physical activity 
 
 logistic DEP PHYSbin
-logistic DEP ageGRP sex dwell urbanrural smoke alcohol houseCAT income multimorb depFU1 moodFU1 anxFU1 PHYSbin
+logistic DEP i.ageGRP i.sex i.dwell i.urbanruralBIN i.smoke i.alcohol i.houseCAT i.income i.multimorb i.depFU1 i.moodFU1 i.anxFU1 PHYSbin
 logistic ANX PHYSbin
-logistic ANX ageGRP sex dwell urbanrural smoke alcohol houseCAT income multimorb depFU1 moodFU1 anxFU1 PHYSbin
+logistic ANX i.ageGRP i.sex i.dwell i.urbanruralBIN i.smoke i.alcohol i.houseCAT i.income i.multimorb i.depFU1 i.moodFU1 i.anxFU1 PHYSbin
 
 * secondary hypotheses - greater risk of depression/anxiety if higher preCOVID social activity and lower COVID social activity 
 
 * dichotomous * 
-by socialDICHFU1, sort :logistic DEP SOCIALbin
-by socialDICHFU1, sort :logistic DEP ageGRP sex dwell urbanrural smoke alcohol houseCAT income multimorb depFU1 moodFU1 anxFU1 SOCIALbin
+by agesocBIN, sort :logistic DEP SOCIALbin
+by agesocBIN, sort :logistic DEP i.ageGRP i.sex i.dwell i.urbanruralBIN i.smoke i.alcohol i.houseCAT i.income i.multimorb i.depFU1 i.moodFU1 i.anxFU1 SOCIALbin
 
-by socialDICHFU1, sort :logistic ANX SOCIALbin
-by socialDICHFU1, sort :logistic ANX ageGRP sex dwell urbanrural smoke alcohol houseCAT income multimorb depFU1 moodFU1 anxFU1 SOCIALbin
+by agesocBIN, sort :logistic ANX SOCIALbin
+by agesocBIN, sort :logistic ANX i.ageGRP i.sex i.dwell i.urbanruralBIN i.smoke i.alcohol i.houseCAT i.income i.multimorb i.depFU1 i.moodFU1 i.anxFU1 SOCIALbin
 
-by socialDICHFU1, sort : logistic DEP INTOUCHbin
-by socialDICHFU1, sort : logistic DEP ageGRP sex dwell urbanrural smoke alcohol houseCAT income multimorb depFU1 moodFU1 anxFU1 SOCIALbin
+by agesocBIN, sort : logistic DEP INTOUCHbin
+by agesocBIN, sort : logistic DEP i.ageGRP i.sex i.dwell i.urbanruralBIN i.smoke i.alcohol i.houseCAT i.income i.multimorb i.depFU1 i.moodFU1 i.anxFU1 SOCIALbin
 
-by socialDICHFU1, sort : logistic ANX INTOUCHbin
-by socialDICHFU1, sort : logistic ANX ageGRP sex dwell urbanrural smoke alcohol houseCAT income multimorb depFU1 moodFU1 anxFU1 INTOUCHbin
-
-* quintiles *
-
-by socialQUINTFU1, sort :logistic DEP SOCIALbin
-by socialQUINTFU1, sort :logistic DEP ageGRP sex dwell urbanrural smoke alcohol houseCAT income multimorb depFU1 moodFU1 anxFU1 SOCIALbin
-
-by socialQUINTFU1, sort :logistic ANX SOCIALbin
-
-by socialQUINTFU1, sort :logistic ANX ageGRP sex dwell urbanrural smoke alcohol houseCAT income multimorb depFU1 moodFU1 anxFU1 SOCIALbin
-
-by socialQUINTFU1, sort : logistic DEP INTOUCHbin
-
-by socialQUINTFU1, sort : logistic DEP ageGRP sex dwell urbanrural smoke alcohol houseCAT income multimorb depFU1 moodFU1 anxFU1 SOCIALbin
-
-by socialQUINTFU1, sort : logistic ANX INTOUCHbin
-by socialQUINTFU1, sort : logistic ANX ageGRP sex dwell urbanrural smoke alcohol houseCAT income multimorb depFU1 moodFU1 anxFU1 INTOUCHbin
-
-
-* secondary hypotheses - greater risk of depression/anxiety if higher preCOVID physical and lower COVID physical 
-
-* high vs low 
-by paseHL, sort :logistic DEP PHYSbin
-by paseHL, sort :logistic DEP ageGRP sex dwell urbanrural smoke alcohol houseCAT income multimorb depFU1 moodFU1 anxFU1 PHYSbin
-by paseHL, sort :logistic ANX PHYSbin
-by paseHL, sort :logistic ANX ageGRP sex dwell urbanrural smoke alcohol houseCAT income multimorb depFU1 moodFU1 anxFU1 PHYSbin
-
-
-* adjusting for physical activity
-
-logistic DEP ageGRP sex dwell urbanrural smoke alcohol houseCAT income multimorb depFU1 moodFU1 anxFU1 paseHL PHYSbin
-
-logistic ANX ageGRP sex dwell urbanrural smoke alcohol houseCAT income multimorb depFU1 moodFU1 anxFU1 paseHL PHYSbin
-
+by agesocBIN, sort : logistic ANX INTOUCHbin
+by agesocBIN, sort : logistic ANX i.ageGRP i.sex i.dwell i.urbanruralBIN i.smoke i.alcohol i.houseCAT i.income i.multimorb i.depFU1 i.moodFU1 i.anxFU1 INTOUCHbin
 
 **** missingness ANALYSIS ******
 
