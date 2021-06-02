@@ -457,6 +457,40 @@ by agesocBIN, sort : logistic DEP i.ageGRP i.sex i.dwell i.urbanruralBIN i.smoke
 by agesocBIN, sort : logistic ANX INTOUCHbin
 by agesocBIN, sort : logistic ANX i.ageGRP i.sex i.dwell i.urbanruralBIN i.smoke i.alcohol i.houseCAT i.income i.multimorb i.depFU1 i.moodFU1 i.anxFU1 INTOUCHbin
 
+by agesocBIN, sort : logistic DEP PHYSbin
+by agesocBIN, sort : logistic DEP i.ageGRP i.sex i.dwell i.urbanruralBIN i.smoke i.alcohol i.houseCAT i.income i.multimorb i.depFU1 i.moodFU1 i.anxFU1 PHYSbin
+
+by agesocBIN, sort : logistic ANX PHYSbin
+by agesocBIN, sort : logistic ANX i.ageGRP i.sex i.dwell i.urbanruralBIN i.smoke i.alcohol i.houseCAT i.income i.multimorb i.depFU1 i.moodFU1 i.anxFU1 PHYSbin
+
+ secondary hypotheses - greater risk of depression/anxiety if higher preCOVID physical and lower COVID physical 
+
+* high vs low 
+
+by paseHL, sort :logistic DEP SOCIALbin
+by paseHL, sort :logistic DEP i.ageGRP i.sex i.dwell i.urbanruralBIN i.smoke i.alcohol i.houseCAT i.income i.multimorb i.depFU1 i.moodFU1 i.anxFU1  SOCIALbin
+by paseHL, sort :logistic ANX SOCIALbin
+by paseHL, sort :logistic ANX i.ageGRP i.sex i.dwell i.urbanruralBIN i.smoke i.alcohol i.houseCAT i.income i.multimorb i.depFU1 i.moodFU1 i.anxFU1  SOCIALbin
+
+
+by paseHL, sort :logistic DEP INTOUCHbin
+by paseHL, sort :logistic DEP i.ageGRP i.sex i.dwell i.urbanruralBIN i.smoke i.alcohol i.houseCAT i.income i.multimorb i.depFU1 i.moodFU1 i.anxFU1  INTOUCHbin
+by paseHL, sort :logistic ANX INTOUCHbin
+by paseHL, sort :logistic ANX i.ageGRP i.sex i.dwell i.urbanruralBIN i.smoke i.alcohol i.houseCAT i.income i.multimorb i.depFU1 i.moodFU1 i.anxFU1  INTOUCHbin
+
+
+by paseHL, sort :logistic DEP PHYSbin
+by paseHL, sort :logistic DEP i.ageGRP i.sex i.dwell i.urbanruralBIN i.smoke i.alcohol i.houseCAT i.income i.multimorb i.depFU1 i.moodFU1 i.anxFU1  PHYSbin
+by paseHL, sort :logistic ANX PHYSbin
+by paseHL, sort :logistic ANX i.ageGRP i.sex i.dwell i.urbanruralBIN i.smoke i.alcohol i.houseCAT i.income i.multimorb i.depFU1 i.moodFU1 i.anxFU1  PHYSbin
+
+
+* adjusting for physical activity
+
+logistic DEP i.ageGRP i.sex i.dwell i.urbanruralBIN i.smoke i.alcohol i.houseCAT i.income i.multimorb i.depFU1 i.moodFU1 i.anxFU1  i.paseHL PHYSbin
+
+logistic ANX i.ageGRP i.sex i.dwell i.urbanruralBIN i.smoke i.alcohol i.houseCAT i.income i.multimorb i.depFU1 i.moodFU1 i.anxFU1  i.paseHL PHYSbin
+
 **** missingness ANALYSIS ******
 
 * who is in the study 
