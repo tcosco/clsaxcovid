@@ -1,10 +1,8 @@
-* Recoding missing variables to . 
+*** CLSA COVID: Physical & Social Activity x Mental Health *** 
 
 
-* Assigning labels 
 
 * defining variable names 
-
 
 label define Sex 0 "Female" 1 "Male"
 label define Likert  5 "Much better" 4 "A little better" 3 "Same" 2 "A little worse" 1 "Much worse"
